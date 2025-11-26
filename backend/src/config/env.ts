@@ -17,32 +17,24 @@ interface Environment {
   CLOUDINARY_API_SECRET: string;
 }
 
-const getEnvVariable = (key: keyof Environment): string => {
-  const value = process.env[key];
-  if (!value) {
-    throw new Error(`❌ Environment variable ${key} is not set`);
-  }
-  return value;
-};
-
 export const env: Environment = {
-  NODE_ENV: getEnvVariable('NODE_ENV') || 'development',
-  PORT: parseInt(getEnvVariable('PORT')) || 5000,
-  MONGODB_URI: getEnvVariable('MONGODB_URI'),
-  JWT_SECRET: getEnvVariable('JWT_SECRET'),
-  JWT_EXPIRE: getEnvVariable('JWT_EXPIRE'),
-  CLIENT_URL: getEnvVariable('CLIENT_URL'),
-  CLOUDINARY_CLOUD_NAME: getEnvVariable('CLOUDINARY_CLOUD_NAME'),
-  CLOUDINARY_API_KEY: getEnvVariable('CLOUDINARY_API_KEY'),
-  CLOUDINARY_API_SECRET: getEnvVariable('CLOUDINARY_API_SECRET'),
+  NODE_ENV: process.env.NODE_ENV || 'development',
+  PORT: parseInt(process.env.PORT || '5000'),
+  MONGODB_URI: process.env.MONGODB_URI || '',
+  JWT_SECRET: process.env.JWT_SECRET || '',
+  JWT_EXPIRE: process.env.JWT_EXPIRE || '7d',
+  CLIENT_URL: process.env.CLIENT_URL || 'http://localhost:5173',
+  CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME || '',
+  CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY || '',
+  CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET || '',
 };
 
-// Validate required environment variables in production
-if (env.NODE_ENV === 'production') {
-  const required = ['MONGODB_URI', 'JWT_SECRET', 'CLOUDINARY_CLOUD_NAME', 'CLOUDINARY_API_KEY', 'CLOUDINARY_API_SECRET'];
-  required.forEach(key => {
-    if (!process.env[key]) {
-      throw new Error(`❌ Required environment variable ${key} is missing in production`);
-    }
-  });
-}
+// Log loaded environment variables (without secrets)
+console.log('🔧 Environment loaded:');
+console.log('  NODE_ENV:', env.NODE_ENV);
+console.log('  PORT:', env.PORT);
+console.log('  MONGODB_URI:', env.MONGODB_URI ? '✓ Set' : '✗ Missing');
+console.log('  JWT_SECRET:', env.JWT_SECRET ? '✓ Set' : '✗ Missing');
+console.log('  CLOUDINARY_CLOUD_NAME:', env.CLOUDINARY_CLOUD_NAME ? '✓ Set' : '✗ Missing');
+console.log('  CLOUDINARY_API_KEY:', env.CLOUDINARY_API_KEY ? '✓ Set' : '✗ Missing');
+console.log('  CLOUDINARY_API_SECRET:', env.CLOUDINARY_API_SECRET ? '✓ Set' : '✗ Missing');

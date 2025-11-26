@@ -1,6 +1,6 @@
 // Upload Middleware
-import multer from 'multer'
-import { Request, Response, NextFunction } from 'express'
+import multer from 'multer';
+import { Request, Response, NextFunction } from 'express';
 
 const storage = multer.memoryStorage();
 
@@ -12,8 +12,6 @@ const fileFilter = (req: Request, file: Express.Multer.File, cb: multer.FileFilt
     }
 };
 
-
-
 // Configure multer
 const upload = multer({
     storage: storage,
@@ -23,12 +21,11 @@ const upload = multer({
     },
 });
 
-
 // Middleware for single file upload
-export const uploadSingle = upload.single('media');
+export const uploadSingle = upload.single('file');
 
 // Middleware for multiple files (if needed later)
-export const uploadMultiple = upload.array('media', 10); // Max 10 files
+export const uploadMultiple = upload.array('file', 10); // Max 10 files
 
 export const handleUploadError = (error: any, req: Request, res: Response, next: NextFunction) => {
     if (error instanceof multer.MulterError) {
@@ -37,7 +34,6 @@ export const handleUploadError = (error: any, req: Request, res: Response, next:
                 status: 'error',
                 message: 'File too large, Maximum size 50 MB'
             });
-
         }
         if (error.code === 'LIMIT_FILE_COUNT') {
             return res.status(400).json({

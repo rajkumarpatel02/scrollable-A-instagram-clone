@@ -1,5 +1,4 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import { NextFunction } from 'express';
 import bcrypt from 'bcryptjs';
 import { IUser } from '../types/user';
 
@@ -20,7 +19,7 @@ const userSchema = new Schema<IUser>(
       trim: true,
       lowercase: true,
       match: [
-        /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
+        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
         'Please enter a valid email',
       ],
     },
@@ -45,21 +44,15 @@ userSchema.index({ email: 1 });
 userSchema.index({ username: 1 });
 
 // Pre-save middleware to hash password before saving
-userSchema.pre<IUser>('save', async function (next) {
+userSchema.pre<IUser>('save', async function () {
   // Only hash the password if it's modified (or new)
   if (!this.isModified('password')) {
-    return next();
+    return;
   }
 
-  try {
-    // Generate salt
-    const salt = await bcrypt.genSalt(12);
-    // Hash password
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
-  } catch (error: any) {
-    next(error);
-  }
+  // Generate salt and hash password
+  const salt = await bcrypt.genSalt(12);
+  this.password = await bcrypt.hash(this.password, salt);
 });
 
 // Method to check if password matches

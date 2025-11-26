@@ -1,9 +1,13 @@
 // Cloudinary Configuration
 import { v2 as cloudinary } from 'cloudinary';
 import { env } from './env';
-import { Multer } from 'multer';
 
 // Configure Cloudinary
+console.log('🔧 Configuring Cloudinary with:');
+console.log('  cloud_name:', env.CLOUDINARY_CLOUD_NAME || '(empty)');
+console.log('  api_key:', env.CLOUDINARY_API_KEY || '(empty)');
+console.log('  api_secret:', env.CLOUDINARY_API_SECRET ? '***' + env.CLOUDINARY_API_SECRET.slice(-4) : '(empty)');
+
 cloudinary.config({
   cloud_name: env.CLOUDINARY_CLOUD_NAME,
   api_key: env.CLOUDINARY_API_KEY,
