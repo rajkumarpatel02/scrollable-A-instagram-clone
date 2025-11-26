@@ -1,1 +1,3 @@
-// Models Index
+import User from './User';
+
+export { User };
