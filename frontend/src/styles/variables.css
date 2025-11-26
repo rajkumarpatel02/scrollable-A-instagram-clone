@@ -1,0 +1,8 @@
+/* CSS Variables */
+:root {
+    --primary-color: #0095f6;
+    --secondary-color: #262626;
+    --border-color: #dbdbdb;
+    --background-color: #fafafa;
+    --text-color: #262626;
+}
